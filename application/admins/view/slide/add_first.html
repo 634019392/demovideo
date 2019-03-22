@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>添加幻灯片</title>
+    <link rel="stylesheet" href="__STATIC__/plugins/layui/css/layui.css">
+    <script src="__STATIC__/plugins/layui/layui.js"></script>
+</head>
+<body style="padding-top: 10px">
+    <form class="layui-form">
+        <input type="hidden" name="type" value="0">
+        <input type="hidden" name="id" value="{{$data.item.id}}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="title" value="{{$data.item.title}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="ord" value="{{$data.item.ord}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">URL</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="url" value="{{$data.item.url}}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片上传</label>
+            <div class="layui-form-block">
+                <button class="layui-btn layui-btn-sm" id="upload_img" onclick="return false;"><i class="layui-icon">&#xe67c;</i>上传图片</button>
+                <img id="preview_img" style="height: 30px;" <?php if($data['item']['img']) {echo 'src="'.$data['item']['img'].'"';} ?>>
+                <input type="hidden" name="img" value="{{$data.item.img}}">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" onclick="save()">保存</button>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    layui.use(['layer', 'form', 'upload'], function () {
+        layer = layui.layer;
+        form = layui.form;
+        $ = layui.jquery;
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload_img' //绑定元素
+            , url: '/admins.php/admins/video/upload_img' //上传接口
+            , accept: 'images'
+            , done: function (res) {
+                console.log(res);
+                //上传完毕回调
+                if (res.code > 0) {
+                    layer.msg(res.msg, {icon: 2});
+                } else {
+                    $('#preview_img').attr('src', res.msg);
+                    $('input[name="img"]').val(res.msg);
+                }
+            }
+            , error: function () {
+                //请求异常回调
+                console.log(222);
+            }
+        });
+    });
+
+    // 保存管理员
+    function save() {
+        var title = parseInt($('input[name="title"]').val());
+        var ord = parseInt($('input[name="ord"]').val());
+        var url = $.trim($('input[name="url"]').val());
+        var img = $.trim($('input[name="img"]').val());
+        if (ord == '') {
+            $('input[name="ord"]').val(0)
+        }
+        if (title == '') {
+            layer.alert('请出入标题', {icon: 2});
+            return;
+        }
+        if (url == '') {
+            layer.alert('请出入URL', {icon: 2});
+            return;
+        }
+        if (img == '') {
+            layer.alert('请上传图片', {icon: 2});
+            return;
+        }
+        $.post('/admins.php/admins/slide/save',$('form').serialize(),function (res) {
+            if (res.code > 0) {
+                layer.alert(res.msg,{icon: 2})
+            } else {
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    parent.window.location.reload();
+                },1000)
+            }
+        }, 'json');
+
+    }
+</script>
+</body>
+</html>
