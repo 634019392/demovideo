@@ -62,8 +62,8 @@
         <td>{{$vo.title}}</td>
         <td>{{$vo.pv}}</td>
         <td>{{$vo.score}}</td>
-        <td>{{:date('Y-m-d H:i:s',$vo.add_time)}}</td>
         <td>{{$vo.status == 0 ? '<span style="color: red;">下线</span>' : '<span style="color: green;">正常</span>'}}</td>
+        <td>{{:date('Y-m-d H:i:s',$vo.add_time)}}</td>
         <td>
             <button class="layui-btn layui-btn-xs" onclick='add("{{$vo.id}}")'>编辑</button>
             <button class="layui-btn layui-btn-xs layui-btn-danger" onclick="del({{$vo.id}})">删除</button>

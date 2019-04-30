@@ -3,6 +3,7 @@
 
 
 <head itemprop="video" itemscope itemtype="//schema.org/VideoObject">
+    <link rel="stylesheet" href="__STATIC__/plugins/dplayer/DPlayer.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>来电狂响-电影-高清完整版视频在线观看–爱奇艺</title>
     <link rel="shortcut icon" href="//www.iqiyipic.com/common/images/logo.ico" type="image/icon"/>
@@ -310,31 +311,66 @@
         </div>
     </div>
 </div>
+
+<script src="__STATIC__/plugins/dplayer/hls.min.js"></script>
+<script src="__STATIC__/plugins/dplayer/DPlayer.min.js"></script>
 <script src="__STATIC__/plugins/assets/jquery/jquery-2.0.3.min.js"></script>
-<script src="__STATIC__/plugins/ckplayer/ckplayer/ckplayer.js"></script>
+<!--<script src="__STATIC__/plugins/ckplayer/ckplayer/ckplayer.js"></script>-->
+
 <script type="text/javascript">
     $(document).ready(function () {
         var video_height = $('.player-sdc').height();
         $('#video').height(video_height);
     })
-    var videoObject = {
-        container:'#video',
-        volume:'0.6',//初始音量
-        variable:'player',
-        poster:'/static/plugins/ckplayer/material/poster.jpg',//封面图片
-        autoplay:true,
-        flashplayer:true,
-        video: [
-            ['{{$video.url}}', 'video/mp4', '标清', 0],
-        ]
-    };
-    var player=new ckplayer(videoObject);
-
     $(window).resize(function () {
         var video_height = $('.player-sdc').height();
         $('#video').height(video_height);
     })
+    const dp = new DPlayer({
+        container: document.getElementById('video'),
+        autoplay:true,
+        loop:true,
+        video: {
+            url: 'http://video.w20.top/g_standard.m3u8',
+//            url: 'http://video.w20.top/videodasheng.m3u8',
+            type: 'hls',
+//            url: 'http://video.w20.top/videodasheng.mp4',
+            pic: 'demo.jpg',
+            thumbnails: 'thumbnails.jpg',
+            lang:'zh'
+        },
+    });
+    const danmaku = {
+        text: 'Get a danamku via WebSocket',
+        color: '#fff',
+        type: 'right'
+    };
+
 </script>
+
+<!--<script type="text/javascript">-->
+    <!--$(document).ready(function () {-->
+        <!--var video_height = $('.player-sdc').height();-->
+        <!--$('#video').height(video_height);-->
+    <!--})-->
+    <!--var videoObject = {-->
+        <!--container:'#video',-->
+        <!--volume:'0.6',//初始音量-->
+        <!--variable:'player',-->
+        <!--poster:'/static/plugins/ckplayer/material/poster.jpg',//封面图片-->
+        <!--autoplay:true,-->
+        <!--flashplayer:true,-->
+        <!--video: [-->
+            <!--['{{$video.url}}', 'video/mp4', '标清', 0],-->
+        <!--]-->
+    <!--};-->
+    <!--var player=new ckplayer(videoObject);-->
+
+    <!--$(window).resize(function () {-->
+        <!--var video_height = $('.player-sdc').height();-->
+        <!--$('#video').height(video_height);-->
+    <!--})-->
+<!--</script>-->
 
 
 <div id="iqiyi-main">

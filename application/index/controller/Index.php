@@ -5,6 +5,7 @@ namespace app\index\controller;
 use think\Controller;
 use Util\data\Sysdb;
 
+
 class Index extends Controller
 {
     public function __construct()
@@ -37,7 +38,7 @@ class Index extends Controller
         $left_wait_arr = $this->db->table('video')->where(['channel_id' => 2, 'status' => 1])->order('id desc')->limit('0,14')->lists();
         $today_video_list['left'] = $this->regroup_arr($left_wait_arr);
         $today_video_list['right'] = $this->db->table('video')->where(['channel_id' => 2, 'status' => 1])->order('id desc')->limit('15,10')->lists();
-        $today_video_list['right'] = array_chunk($today_video_list['right'],2);
+        $today_video_list['right'] = array_chunk($today_video_list['right'], 2);
 
         // 综艺（轮播图）
         $variety_img = $this->db->table('slide')->where(['type' => 2])->order('ord desc')->limit(2)->lists();
@@ -107,7 +108,7 @@ class Index extends Controller
         $video = $this->db->table('video')->where(['id' => $id])->item();
 
         //进入一次播放页面，对应视频的播放量+1
-        $this->db->table('video')->where(['id' => $id])->update(['pv'=>($video['pv']+1)]);
+        $this->db->table('video')->where(['id' => $id])->update(['pv' => ($video['pv'] + 1)]);
 
         $this->assign('video', $video);
         return $this->fetch();
@@ -172,59 +173,60 @@ class Index extends Controller
      * @param array $result_arr // 自定义组装数组，也是返回数组
      * @return array
      */
-    private function regroup_arr($wait_arr,$result_arr = []) {
+    private function regroup_arr($wait_arr, $result_arr = [])
+    {
         $i = 0;
-        foreach ($wait_arr as $k=>$v) {
+        foreach ($wait_arr as $k => $v) {
             $i++;
-            if ($i<=2) {
+            if ($i <= 2) {
                 if ($i % 2 == 1) {
-                    if (empty(array_slice($wait_arr, $i-1, 1))) {
+                    if (empty(array_slice($wait_arr, $i - 1, 1))) {
                         continue;
                     } else {
-                        $result_arr[0] = array_slice($wait_arr, $i-1, 1)[0];
+                        $result_arr[0] = array_slice($wait_arr, $i - 1, 1)[0];
                         $result_arr[0]['child'] = [];
                     }
                 } else {
-                    if (empty(array_slice($wait_arr, $i-1, 1))) {
+                    if (empty(array_slice($wait_arr, $i - 1, 1))) {
                         continue;
                     } else {
-                        $result_arr[1] = array_slice($wait_arr, $i-1, 1)[0];
+                        $result_arr[1] = array_slice($wait_arr, $i - 1, 1)[0];
                         $result_arr[1]['child'] = [];
                     }
                 }
             } else {
                 if ($i % 2 == 1) {
-                    if (count($result_arr[0]['child'])<3) {
+                    if (count($result_arr[0]['child']) < 3) {
                         $key = count($result_arr[0]['child']);
                         $result_arr[0]['child'][$key] = [];
-                        if (!empty(array_slice($wait_arr, $i-1, 1))) {
-                            array_push($result_arr[0]['child'][$key],array_slice($wait_arr, $i-1, 1)[0]);
+                        if (!empty(array_slice($wait_arr, $i - 1, 1))) {
+                            array_push($result_arr[0]['child'][$key], array_slice($wait_arr, $i - 1, 1)[0]);
                         } else {
                             continue;
                         }
 
                         if (count($result_arr[0]['child'][$key]) < 2) {
-                            $dan_arr = array_slice($wait_arr, $i+5, 1);
+                            $dan_arr = array_slice($wait_arr, $i + 5, 1);
                             if (!empty($dan_arr)) {
-                                array_push($result_arr[0]['child'][$key],$dan_arr[0]);
+                                array_push($result_arr[0]['child'][$key], $dan_arr[0]);
                             } else {
                                 continue;
                             }
                         }
                     }
                 } else {
-                    if (count($result_arr[1]['child'])<3) {
+                    if (count($result_arr[1]['child']) < 3) {
                         $key = count($result_arr[1]['child']);
                         $result_arr[1]['child'][$key] = [];
-                        if (!empty(array_slice($wait_arr, $i-1, 1))) {
-                            array_push($result_arr[1]['child'][$key],array_slice($wait_arr, $i-1, 1)[0]);
+                        if (!empty(array_slice($wait_arr, $i - 1, 1))) {
+                            array_push($result_arr[1]['child'][$key], array_slice($wait_arr, $i - 1, 1)[0]);
                         } else {
                             continue;
                         }
                         if (count($result_arr[1]['child'][$key]) < 2) {
-                            $shuang_arr = array_slice($wait_arr, $i+5, 1);
+                            $shuang_arr = array_slice($wait_arr, $i + 5, 1);
                             if (!empty($shuang_arr)) {
-                                array_push($result_arr[1]['child'][$key],$shuang_arr[0]);
+                                array_push($result_arr[1]['child'][$key], $shuang_arr[0]);
                             } else {
                                 continue;
                             }
@@ -235,5 +237,4 @@ class Index extends Controller
         }
         return $result_arr;
     }
-
 }

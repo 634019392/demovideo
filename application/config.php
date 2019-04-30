@@ -27,7 +27,10 @@ return [
     // 注册的根命名空间
     'root_namespace'         => [],
     // 扩展函数文件
-    'extra_file_list'        => [THINK_PATH . 'helper' . EXT],
+    'extra_file_list'        => [
+        THINK_PATH . 'helper' . EXT,
+        THINK_PATH . 'custom_helper' . EXT,
+    ],
     // 默认输出类型
     'default_return_type'    => 'html',
     // 默认AJAX 数据返回格式,可选json xml ...
@@ -254,5 +257,12 @@ return [
         'length' => 4,
         // 验证成功后重置
         'reset' => true
+    ],
+
+    // 七牛配置
+    'qiniu' => [
+        'accessKey'=>'5w_1SysUwnAgl_7N-P2Nvgl-3VZk72XqJtVt_bTk',
+        'secretKey'=>'0ufeznfLYzbDQ3zOenh1rKtsHQbiO18tOtgsn1VR',
+        'bucket'=>'video',
     ],
 ];
